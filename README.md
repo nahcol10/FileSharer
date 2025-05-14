@@ -1,119 +1,130 @@
-File Sharing App
+# 📁 File Sharing App
 
-A simple file-sharing web application that allows users to upload a file and generate a unique PIN for secure file sharing. Other users can download the file using the correct PIN, ensuring privacy and ease of access.
-Features
+A simple, secure web application for sharing files using unique PINs. Upload a file, get a PIN, and share it. Others can download the file using that PIN without needing an account.
 
-    File Upload: Upload a single file at a time.
-    PIN Generation: A unique PIN is generated for each uploaded file.
-    Secure Download: Only users with the correct PIN can download the file.
-    No Signup Required: Share files without the need for creating an account.
+---
 
-Technologies Used
+## ✨ Features
 
-    Frontend: React, Tailwind CSS
-    Backend: Spring Boot, Java
-    Database: Mysql
-    File Handling: Multipart File Upload via Axios, File System storage
-    Security: PIN-based file access control
+*   ⬆️ **File Upload**: Easily upload a single file.
+*   🔑 **PIN Generation**: Automatically generates a unique, secure PIN for every upload.
+*   🔒 **Secure Download**: Files are only accessible with the correct PIN.
+*   👤 **No Signup Required**: Quick and anonymous file sharing.
 
-Prerequisites
+---
 
-To run this project, you need to have the following installed:
+## 🛠️ Technologies Used
 
-    Node.js: Download Node.js
-    Java 17: Download Java
-    Maven: Download Maven
+*   **Frontend**: React, Tailwind CSS
+*   **Backend**: Spring Boot, Java 17
+*   **Database**: MySQL
+*   **File Handling**: Axios (for Multipart upload), Local File System Storage
+*   **Security**: PIN-based access control
 
-Getting Started
-Backend Setup (Spring Boot)
+---
 
-    Clone the repository:
+## ✅ Prerequisites
 
-    bash
+Before you begin, ensure you have the following installed:
 
-git clone [https://github.com/nahcol10/file-sharer.git](https://github.com/nahcol10/FileSharer.git)
-cd file-sharer/backend
+*   [Node.js](https://nodejs.org/) (LTS version recommended)
+*   [Java Development Kit (JDK) 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or later
+*   [Apache Maven](https://maven.apache.org/download.cgi)
 
-Configure application properties: In src/main/resources/application.properties, you can update settings if needed, especially for storage locations and database configurations. For example:
+---
 
-properties
+## 🚀 Installation & Setup
 
-# File upload settings
-file.upload-dir=./uploads
+### Backend Setup (Spring Boot)
 
-Run the Spring Boot application:
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/nahcol10/file-sharer.git
+    cd file-sharer
+    ```
 
-bash
+2.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
 
+3.  **Configure Application Properties (Optional):**
+    Modify `src/main/resources/application.properties` if you need to change database credentials, server port, or the file storage location.
+    ```properties
+    # Example configurations (update as needed)
+    # spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+    # spring.datasource.username=your_db_username
+    # spring.datasource.password=your_db_password
+    # file.storage.location=/path/to/your/storage/directory
+    # server.port=8080
+    ```
+
+4.  **Run the Spring Boot application:**
+    ```bash
     mvn spring-boot:run
+    ```
+     Razz The backend server will start, typically running at `http://localhost:8080`.
 
-    By default, the backend will be running at http://localhost:8080.
+### Frontend Setup (React)
 
-Frontend Setup (React)
+1.  **Navigate to the frontend directory:**
+    ```bash
+    # Assuming you are in the root 'file-sharer' directory
+    cd ../frontend
+    # Or if you are in the 'backend' directory
+    # cd ../frontend
+    ```
 
-    Navigate to the frontend directory:
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-    bash
+3.  **Run the development server:**
+    ```bash
+    npm run start
+    ```
+     The frontend development server will start, typically accessible at `http://localhost:5173`.
 
-cd ../frontend
+---
 
-Install the dependencies:
+## 💻 Usage
 
-bash
+1.  **Upload a File:**
+    *   Open your web browser and navigate to the frontend URL (e.g., `http://localhost:5173`).
+    *   Use the upload interface to select and upload your file.
+    *   Once the upload is complete, a unique **PIN** will be displayed on the screen.
+    *    securely share this PIN with the person you want to give access to the file.
 
-npm install
+2.  **Download a File:**
+    *   The recipient should navigate to the frontend application (e.g., `http://localhost:5173`).
+    *   They will find an option or page (often linked, perhaps like `http://localhost:5173/download`) to enter a PIN.
+    *   Enter the correct PIN received from the uploader.
+    *   If the PIN is valid, a download link or an automatic download prompt for the associated file will appear.
 
-Run the development server:
+---
 
-bash
+## 🔌 API Endpoints
 
-    npm start
+The backend exposes the following RESTful endpoints:
 
-    The frontend will be running at http://localhost:5173.
+### 1. File Upload
 
-Running the Application
+*   **URL**: `/upload-file`
+*   **Method**: `POST`
+*   **Request Body**: `MultipartFile` (The file being uploaded, typically named `file` in the form data).
+*   **Success Response**: `200 OK` with the generated `PIN` (String) in the response body.
+*   **Error Response**: Appropriate HTTP status codes (e.g., `400 Bad Request`, `500 Internal Server Error`).
 
-    Upload File:
-        Navigate to the upload page (http://localhost:5173).
-        Upload a file. After the file is uploaded, a PIN will be generated and displayed. Share this PIN with the intended recipient.
+### 2. File Download
 
-    Download File:
-        The recipient can use the same frontend to input the PIN on the download page (http://localhost:5173/download) and retrieve the file.
+*   **URL**: `/download`
+*   **Method**: `GET`
+*   **Query Parameter**: `pin` (The unique PIN associated with the file).
+    *   Example: `http://localhost:8080/download?pin=ABC123`
+*   **Success Response**: `200 OK` with the file content as an attachment (`Content-Disposition: attachment; filename="yourfile.ext"`).
+*   **Error Response**:
+    *   `404 Not Found`: If the PIN is invalid or the file doesn't exist.
+    *   `500 Internal Server Error`: If there's an issue retrieving the file.
 
-API Endpoints
-File Upload
-
-    URL: /upload-file
-    Method: POST
-    Request Body: MultipartFile
-    Response: A unique PIN associated with the uploaded file
-
-File Download
-
-    URL: /download
-    Method: GET
-    Query Parameter: pin (The unique PIN to access the file)
-    Response: The requested file for download
-
-Folder Structure
-
-bash
-
-file-sharer/
-├── backend/
-│   ├── src/
-│   ├── target/
-│   └── pom.xml
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-└── README.md
-
-    Add unit tests for backend services
-
-License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-This README.md provides an overview of your project, setup instructions, and basic usage details. You can modify or add sections as you further develop the project! Let me know if you need any changes.
+---
